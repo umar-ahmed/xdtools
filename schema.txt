@@ -1,0 +1,20 @@
+XDFile
+- file name
+- file size
+- artboards
+
+Artboard
+- name
+- width
+- height
+- position
+- viewport height
+- artwork
+
+Artwork
+- name
+- transform
+- style
+
+Text extends Artwork
+- raw text
