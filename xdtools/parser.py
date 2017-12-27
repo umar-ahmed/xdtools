@@ -73,7 +73,7 @@ def extract_artwork(node):
     else:
         raise UnknownShapeException("Error parsing unknown artwork.")
 
-def extract_artboard(node):
+def extract_artboard(node, source):
     """Return the Artboard represented by node."""
     uid = node['id']
     name = node['name']
@@ -112,6 +112,15 @@ def extract_artboard(node):
     else:
         return Artboard(uid, name, width, height, Point(x, y), viewport_height, artworks)
 
+def parse_file(path):
+    source = zipfile.ZipFile(path, 'r')
+    manifest_file = source.read("manifest")
+    artboard_nodes = json.loads(manifest_file)['children'][0]['children']
+
+    for artboard_node in artboard_nodes:
+        artboard = extract_artboard(artboard_node, source)
+        print(artboard)
+
 
 if __name__ == '__main__':
     import doctest
@@ -122,11 +131,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     assert os.path.isfile(args.source), "Source file cannot be found!"
-
-    source = zipfile.ZipFile(args.source, 'r')
-    manifest_file = source.read("manifest")
-    artboard_nodes = json.loads(manifest_file)['children'][0]['children']
-
-    for artboard_node in artboard_nodes:
-        artboard = extract_artboard(artboard_node)
-        print(artboard)
+    parse_file(args.source)
