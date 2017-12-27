@@ -3,8 +3,9 @@ Contains the definition of Path.
 """
 
 from point import Point
+from artwork import Artwork
 
-class Path:
+class Path(Artwork):
     """
     A Path.
 

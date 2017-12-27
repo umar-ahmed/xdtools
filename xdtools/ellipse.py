@@ -3,8 +3,9 @@ Contains the definition of Ellipse.
 """
 
 from point import Point
+from artwork import Artwork
 
-class Ellipse:
+class Ellipse(Artwork):
     """
     An ellipse.
 

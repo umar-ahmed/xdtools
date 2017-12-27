@@ -3,8 +3,9 @@ Contains the definition of Text.
 """
 
 from point import Point
+from artwork import Artwork
 
-class Text:
+class Text(Artwork):
     """
     A Text element.
 

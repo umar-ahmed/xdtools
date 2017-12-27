@@ -3,8 +3,10 @@ Contains the definition of Line.
 """
 
 from point import Point
+from artwork import Artwork
 
-class Line:
+
+class Line(Artwork):
     """
     A Line.
 

@@ -6,6 +6,9 @@ import zipfile
 import json
 import argparse
 import os
+
+from artboard import Artboard
+from point import Point
 from ellipse import Ellipse
 from rectangle import Rectangle
 from line import Line
@@ -13,8 +16,17 @@ from text import Text
 from path import Path
 from group import Group
 
+class UnknownArtworkException(Exception):
+    """Represents an exception where the type of shape is unknown."""
+    pass
+
+
+class UnknownShapeException(UnknownArtworkException):
+    """Represents an exception where the type of shape is unknown."""
+    pass
 
 def extract_artwork(node):
+    """Return the Artwork represented by node."""
     if node['type'] == 'shape':
         if node['shape']['type'] == 'ellipse':
             uid = node['id']
@@ -43,7 +55,7 @@ def extract_artwork(node):
             path_data = node['shape']['path']
             return Path(uid, path_data, name, x, y)
         else:
-            print(node)
+            raise UnknownShapeException("Error parsing unknown shape.")
     elif node['type'] == 'text':
         uid = node['id']
         name = node['name']
@@ -59,8 +71,46 @@ def extract_artwork(node):
             children.append(extract_artwork(child))
         return Group(uid, name, x, y, children)
     else:
-        print(node)
+        raise UnknownShapeException("Error parsing unknown artwork.")
 
+def extract_artboard(node):
+    """Return the Artboard represented by node."""
+    uid = node['id']
+    name = node['name']
+    width = None
+    height = None
+    x = None
+    y = None
+    if 'uxdesign#bounds' in node:
+        width = node['uxdesign#bounds']['width']
+        height = node['uxdesign#bounds']['height']
+        x = node['uxdesign#bounds']['x']
+        y = node['uxdesign#bounds']['y']
+
+    viewport_height = None
+    if 'uxdesign#viewport' in node:
+        viewport_height = node['uxdesign#viewport']['height']
+
+    artboard_file_path = "artwork/{}/graphics/graphicContent.agc".format(
+        node['path'])
+    artboard_file = source.read(artboard_file_path)
+    artboard_data = json.loads(artboard_file)
+    artworks = []
+    for item in artboard_data['children']:
+        for child in item['artboard']['children']:
+            try:
+                artwork = extract_artwork(child)
+            except UnknownShapeException as shape_exception:
+                print(shape_exception)
+            except UnknownArtworkException as artwork_exception:
+                print(artwork_exception)
+            else:
+                artworks.append(artwork)
+
+    if name == 'pasteboard':
+        return Artboard(uid, name, artworks=artworks)
+    else:
+        return Artboard(uid, name, width, height, Point(x, y), viewport_height, artworks)
 
 
 if __name__ == '__main__':
@@ -75,21 +125,8 @@ if __name__ == '__main__':
 
     source = zipfile.ZipFile(args.source, 'r')
     manifest_file = source.read("manifest")
-    artboards = json.loads(manifest_file)['children'][0]['children']
+    artboard_nodes = json.loads(manifest_file)['children'][0]['children']
 
-    for artboard in artboards:
-        artboard_file_path = "artwork/{}/graphics/graphicContent.agc".format(
-            artboard['path'])
-        artboard_file = source.read(artboard_file_path)
-        artboard_data = json.loads(artboard_file)
-        print(">>>", artboard['name'])
-
-        layers = []
-
-        for item in artboard_data['children']:
-            for child in item['artboard']['children']:
-                artwork = extract_artwork(child)
-                layers.append(artwork)
-
-        for layer in layers:
-            print(layer)
+    for artboard_node in artboard_nodes:
+        artboard = extract_artboard(artboard_node)
+        print(artboard)

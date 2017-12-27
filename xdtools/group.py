@@ -3,8 +3,9 @@ Contains the definition of Group.
 """
 
 from point import Point
+from artwork import Artwork
 
-class Group:
+class Group(Artwork):
     """
     A Group.
 
