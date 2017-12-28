@@ -7,6 +7,7 @@ import json
 import argparse
 import os
 
+from xdfile import XDFile
 from artboard import Artboard
 from point import Point
 from ellipse import Ellipse
@@ -16,6 +17,7 @@ from text import Text
 from path import Path
 from group import Group
 from compound import Compound
+from color import Color
 
 
 class UnknownArtworkException(Exception):
@@ -112,12 +114,32 @@ def extract_artboard(node, source):
 def parse_file(path):
     source = zipfile.ZipFile(path, 'r')
     manifest_file = source.read("manifest")
-    artboard_nodes = json.loads(manifest_file)['children'][0]['children']
+    manifest_file_json = json.loads(manifest_file)
+    resources_file = source.read("resources/graphics/graphicContent.agc")
+    resources_file_json = json.loads(resources_file)
 
+    # Extract project metadata
+    project_name = manifest_file_json['name']
+    thumbnail_image_path = manifest_file_json['components'][0]['path']
+    preview_image_path = manifest_file_json['components'][1]['path']
+
+    ## Extract color swatches
+    color_swatches_node = resources_file_json['resources']['meta']['ux']['colorSwatches']
+    color_swatches = []
+    for node in color_swatches_node:
+        value = node['value']
+        color = Color(value['r'], value['g'], value['b'])
+        color_swatches.append(color)
+
+    # Extract artboard content
+    artboards = []
+    artboard_nodes = manifest_file_json['children'][0]['children']
     for artboard_node in artboard_nodes:
         artboard = extract_artboard(artboard_node, source)
-        print(">>> " + artboard.name)
-        print(artboard.artworks)
+        artboards.append(artboard)
+
+    return XDFile(project_name, path, thumbnail_image_path, preview_image_path,
+                  color_swatches, artboards)
 
 
 if __name__ == '__main__':
@@ -129,4 +151,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     assert os.path.isfile(args.source), "Source file cannot be found!"
-    parse_file(args.source)
+
+    xd_file = parse_file(args.source)
