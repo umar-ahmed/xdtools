@@ -26,12 +26,12 @@ class Point:
         self.x = x
         self.y = y
 
-    def __str__(self):
+    def __repr__(self):
         """
-        Return a string representation of this Point.
+        Return a constructor-style representation of this Point.
 
         >>> p = Point(1, 2)
-        >>> print(p)
+        >>> repr(p)
         Point(x=1, y=2)
         """
         return str.format("Point(x={}, y={})", self.x, self.y)

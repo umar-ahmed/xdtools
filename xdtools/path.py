@@ -24,8 +24,8 @@ class Path(Artwork):
         self.name = name
         self.position = Point(x, y)
 
-    def __str__(self):
-        """Return a string representation of this Path."""
+    def __repr__(self):
+        """Return a constructor-style representation of this Path."""
         return str.format(
             "Path(uid=\'{}\', name=\'{}\', path_data=\'{}\', position={})",
             self.uid, self.name, self.path_data, self.position)

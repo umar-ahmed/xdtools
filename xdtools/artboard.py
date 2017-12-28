@@ -30,8 +30,8 @@ class Artboard:
         self.viewport_height = viewport_height
         self.artworks = [] if artworks is None else artworks
 
-    def __str__(self):
-        """Return a string representation of this Artboard."""
+    def __repr__(self):
+        """Return a constructor-style representation of this Artboard."""
         artwork_str = ','.join([str(artwork) for artwork in self.artworks])
         return str.format(
             "Artboard(uid=\'{}\', name=\'{}\', width={}, height={}, " +

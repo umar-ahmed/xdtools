@@ -29,8 +29,8 @@ class Rectangle(Artwork):
         self.width = width
         self.height = height
 
-    def __str__(self):
-        """Return a string representation of this Rectangle."""
+    def __repr__(self):
+        """Return a constructor-style representation of this Rectangle."""
         return str.format(
             "Rectangle(uid=\'{}\', name=\'{}\', position={}, width={}, height={})",
             self.uid, self.name, self.position, self.width, self.height)

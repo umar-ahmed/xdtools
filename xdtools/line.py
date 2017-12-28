@@ -30,9 +30,9 @@ class Line(Artwork):
         self.start = Point(start_x, start_y)
         self.end = Point(end_x, end_y)
 
-    def __str__(self):
+    def __repr__(self):
         """
-        Return a string representation of this Line.
+        Return a constructor-style representation of this Line.
         """
         return str.format(
             "Line(uid=\'{}\', name=\'{}\', position={}, start={}, end={})",

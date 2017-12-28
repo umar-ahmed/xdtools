@@ -25,8 +25,8 @@ class Group(Artwork):
         self.position = Point(x, y)
         self.children = [] if children is None else children
 
-    def __str__(self):
-        """Return a string representation of this Group."""
+    def __repr__(self):
+        """Return a constructor-style representation of this Group."""
         children_str = ','.join([str(child) for child in self.children])
         return str.format(
             "Group(uid=\'{}\', name=\'{}\', position={}, children=[{}])",

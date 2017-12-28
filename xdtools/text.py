@@ -24,8 +24,8 @@ class Text(Artwork):
         self.name = name
         self.position = Point(x, y)
 
-    def __str__(self):
-        """Return a string representation of this Text."""
+    def __repr__(self):
+        """Return a constructor-style representation of this Text."""
         return str.format(
             "Text(uid=\'{}\', name=\'{}\', raw_text=\'{}\', position={})",
             self.uid, self.name, self.raw_text, self.position)
