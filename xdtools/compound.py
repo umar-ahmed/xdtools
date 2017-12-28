@@ -2,8 +2,8 @@
 Contains the definition of Compound.
 """
 
-from point import Point
-from artwork import Artwork
+from .point import Point
+from .artwork import Artwork
 
 
 class Compound(Artwork):

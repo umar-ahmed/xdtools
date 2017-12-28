@@ -2,7 +2,8 @@
 Contains the definition of Artboard.
 """
 
-from point import Point
+from .point import Point
+
 
 class Artboard:
     """

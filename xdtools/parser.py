@@ -7,17 +7,17 @@ import json
 import argparse
 import os
 
-from xdfile import XDFile
-from artboard import Artboard
-from point import Point
-from ellipse import Ellipse
-from rectangle import Rectangle
-from line import Line
-from text import Text
-from path import Path
-from group import Group
-from compound import Compound
-from color import Color
+from .xdfile import XDFile
+from .artboard import Artboard
+from .point import Point
+from .ellipse import Ellipse
+from .rectangle import Rectangle
+from .line import Line
+from .text import Text
+from .path import Path
+from .group import Group
+from .compound import Compound
+from .color import Color
 
 
 class UnknownArtworkException(Exception):

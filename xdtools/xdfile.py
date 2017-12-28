@@ -2,6 +2,7 @@
 Contains the definition of XDFile.
 """
 
+
 class XDFile:
     """
     Represents an Adobe XD project file.
