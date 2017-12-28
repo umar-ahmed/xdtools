@@ -2,8 +2,8 @@
 Contains the definition of Line.
 """
 
-from .point import Point
-from .artwork import Artwork
+from xdtools.utils.point import Point
+from xdtools.artwork.artwork import Artwork
 
 
 class Line(Artwork):

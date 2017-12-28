@@ -2,8 +2,7 @@
 Contains the definition of Compound.
 """
 
-from .point import Point
-from .artwork import Artwork
+from xdtools.artwork.artwork import Artwork
 
 
 class Compound(Artwork):

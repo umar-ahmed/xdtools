@@ -2,7 +2,7 @@
 Contains the definition of Artboard.
 """
 
-from .point import Point
+from xdtools.utils.point import Point
 
 
 class Artboard:

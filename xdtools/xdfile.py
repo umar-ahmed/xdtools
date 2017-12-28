@@ -25,3 +25,6 @@ class XDFile:
         self.color_swatches = [] if color_swatches is None else color_swatches
         self.artboards = [] if artboards is None else artboards
 
+    @staticmethod
+    def open(path):
+        pass

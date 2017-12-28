@@ -1,12 +1,4 @@
-from .parser import parse_file
-from .xdfile import XDFile
-from .artboard import Artboard
-from .point import Point
-from .ellipse import Ellipse
-from .rectangle import Rectangle
-from .line import Line
-from .text import Text
-from .path import Path
-from .group import Group
-from .compound import Compound
-from .color import Color
+from xdtools.xdfile import XDFile
+from xdtools.artboard import Artboard
+
+from xdtools.utils.parser import parse_file
