@@ -4,32 +4,34 @@
 
 ## Planned Features
 
-* Read data from an XD file
-  _ Project Name
-  _ Fonts
-  _ Colors
-  _ Gradients
-  _ Symbols
-  _ Images
-  _ Preview
-  _ Artboards
-  _ Amount
-  _ Names
-  _ Dimensions
-  _ Position
-  _ Viewport Size
-  _ Artwork
-  _ Name
-  _ Type
-  _ Specific Attributes (eg. letter spacing, etc.)
-  _ Dimensions
-  _ Position
-  _ Stroke
-  _ Fill
-  _ Opacity
-  _ Filters
-  _ Interactions
-  _ From
-  _ To
-  _ Transition
-  _ Duration \* Easing
+### Read data from an XD file
+
+* Project Name
+* Fonts
+* Colors
+* Gradients
+* Symbols
+* Images
+* Preview
+* Artboards
+  * Amount
+  * Names
+  * Dimensions
+  * Position
+  * Viewport Size
+  * Artwork
+    * Name
+    * Type
+    * Specific Attributes (eg. letter spacing, etc.)
+    * Dimensions
+    * Position
+    * Stroke
+    * Fill
+    * Opacity
+    * Filters
+* Interactions
+  * From
+  * To
+  * Transition
+  * Duration
+  * Easing
