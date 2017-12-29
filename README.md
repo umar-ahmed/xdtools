@@ -8,6 +8,34 @@
 pip install xdtools
 ```
 
+## Example Usage
+
+### Printing the name of project
+
+```python
+from xdtools import XDFile
+with XDFile('path/to/file.xd', 'r') as xd:
+    print(xd.name)
+```
+
+### Printing the names of artboards
+
+```python
+from xdtools import XDFile
+with XDFile('path/to/file.xd', 'r') as xd:
+    for artboard in xd.artboards:
+      print(artboard.name)
+```
+
+### Printing the color swatches
+
+```python
+from xdtools import XDFile
+with XDFile('path/to/file.xd', 'r') as xd:
+    for color_swatch in xd.color_swatches:
+      print(color_swatch)
+```
+
 ## Planned Features
 
 ### Read data from an XD file
