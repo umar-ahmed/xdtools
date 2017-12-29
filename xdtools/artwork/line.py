@@ -2,8 +2,8 @@
 Contains the definition of Line.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Line(Artwork):
@@ -24,8 +24,7 @@ class Line(Artwork):
         """
         Instantiate a new Line.
         """
-        self.uid = uid
-        self.name = name
+        super().__init__(uid, name)
         self.position = Point(x, y)
         self.start = Point(start_x, start_y)
         self.end = Point(end_x, end_y)

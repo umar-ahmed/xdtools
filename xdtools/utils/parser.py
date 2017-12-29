@@ -34,38 +34,43 @@ def parse_artwork(node):
     x = node['transform']['ty']
     y = node['transform']['tx']
 
+    artwork = None
+
     if node['type'] == 'shape':
         if node['shape']['type'] == 'ellipse':
             width, height = 2 * node['shape']['cx'], 2 * node['shape']['cy']
-            return Ellipse(uid, name, x, y, width, height)
+            artwork = Ellipse(uid, name, x, y, width, height)
         elif node['shape']['type'] == 'rect':
             width, height = node['shape']['width'], node['shape']['height']
-            return Rectangle(uid, name, x, y, width, height)
+            artwork = Rectangle(uid, name, x, y, width, height)
         elif node['shape']['type'] == 'line':
             start_x, start_y = node['shape']['x1'], node['shape']['y1']
             end_x, end_y = node['shape']['x2'], node['shape']['y2']
-            return Line(uid, start_x, start_y,
-                        end_x, end_y, name, x, y)
+            artwork = Line(uid, start_x, start_y,
+                           end_x, end_y, name, x, y)
         elif node['shape']['type'] == 'path':
             path_data = node['shape']['path']
-            return Path(uid, path_data, name, x, y)
+            artwork = Path(uid, path_data, name, x, y)
         elif node['shape']['type'] == 'compound':
             path = node['shape']['path']
             operation = node['shape']['operation']
             children = [parse_artwork(child)
                         for child in node['shape']['children']]
-            return Compound(id, path, operation, children, name, x, y)
+            artwork = Compound(id, path, operation, children, name, x, y)
         else:
             raise UnknownShapeException("Error parsing unknown shape.")
     elif node['type'] == 'text':
         raw_text = node['text']['rawText']
-        return Text(uid, raw_text, name, x, y)
+        artwork = Text(uid, raw_text, name, x, y)
     elif node['type'] == 'group':
         children = [parse_artwork(child)
                     for child in node['group']['children']]
-        return Group(uid, name, x, y, children)
+        artwork = Group(uid, name, x, y, children)
     else:
         raise UnknownShapeException("Error parsing unknown artwork.")
+
+
+    return artwork
 
 
 def parse_artboard(node, source):

@@ -2,8 +2,8 @@
 Contains the definition of Group.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Group(Artwork):
@@ -21,8 +21,7 @@ class Group(Artwork):
 
     def __init__(self, uid, name='Group', x=0, y=0, children=None):
         """Instantiate a new Group."""
-        self.uid = uid
-        self.name = name
+        super().__init__(uid, name)
         self.position = Point(x, y)
         self.children = [] if children is None else children
 

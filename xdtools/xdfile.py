@@ -4,8 +4,9 @@ Contains the definition of XDFile.
 
 from zipfile import ZipFile
 import json
-from xdtools.utils.color import Color
-from xdtools.utils.parser import parse_artboard
+from xdtools.utils import Color
+from xdtools.utils import parse_artboard
+
 
 class XDFile:
     """
@@ -22,7 +23,7 @@ class XDFile:
 
     def __init__(self, path, mode='r'):
         """Open the XD file with mode read 'r' or  write 'w'."""
-        if not mode in ['r', 'w']:
+        if mode not in ['r', 'w']:
             raise ValueError("XDFile requires mode 'r' or 'w'")
 
         self._name = None
@@ -40,7 +41,7 @@ class XDFile:
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type_, value, traceback):
         self.close()
 
     def close(self):

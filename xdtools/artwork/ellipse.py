@@ -2,8 +2,8 @@
 Contains the definition of Ellipse.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Ellipse(Artwork):
@@ -20,15 +20,14 @@ class Ellipse(Artwork):
     === Operations ===
     """
 
-    def __init__(self, uid: int, name='Ellipse', x=0, y=0, width=50, height=50) -> None:
+    def __init__(self, uid, name='Ellipse', x=0, y=0, width=50, height=50):
         """Instantiate a new Ellipse."""
-        self.uid = uid
-        self.name = name
+        super().__init__(uid, name)
         self.position = Point(x, y)
         self.width = width
         self.height = height
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         """Return a constructor-style representation of this Ellipse."""
         return str.format(
             "Ellipse(uid=\'{}\', name=\'{}\', position={}, width={}, height={})",

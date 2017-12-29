@@ -2,8 +2,8 @@
 Contains the definition of Point.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Rectangle(Artwork):
@@ -24,8 +24,7 @@ class Rectangle(Artwork):
         """
         Instantiate a new Rectangle.
         """
-        self.uid = uid
-        self.name = name
+        super().__init__(uid, name)
         self.position = Point(x, y)
         self.width = width
         self.height = height
