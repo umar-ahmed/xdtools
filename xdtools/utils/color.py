@@ -26,10 +26,18 @@ class Color:
         >>> c.b
         255
         """
-        self.r = r
-        self.g = g
-        self.b = b
+        self.r = self.__clamp_value(r)
+        self.g = self.__clamp_value(g)
+        self.b = self.__clamp_value(b)
 
     def __repr__(self):
         """Return a constructor-style representation of this Color."""
         return str.format('Color(r={}, g={}, b={})', self.r, self.g, self.b)
+
+    def to_hex(self):
+        """Return a string hexidecimal representation of this Color."""
+        return '#%02x%02x%02x' % (self.r, self.g, self.b)
+
+    def __clamp_value(self, value):
+        """Clamp value to be in the range 0-255 (inclusive)."""
+        return max(0, min(value, 255))
