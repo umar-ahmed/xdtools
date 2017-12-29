@@ -12,7 +12,7 @@ setup(
     author='Umar Ahmed',
     author_email='umar.ahmed@mail.utoronto.ca',
     url='https://github.com/umar-ahmed/xdtools',
-    download_url='',
+    download_url='https://github.com/umar-ahmed/xdtools/archive/0.1.tar.gz',
     keywords=['adobe', 'xd', 'ui', 'ux'],
     license='MIT',
     zip_safe=False
