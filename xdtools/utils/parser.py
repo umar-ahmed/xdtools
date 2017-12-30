@@ -125,7 +125,7 @@ def parse_styles(node, source):
 def parse_artwork(node, source):
     """Return the Artwork represented by node."""
     uid = node['id']
-    name = node['name']
+    name = node['name'] if 'name' in node else ''
     x = node['transform']['ty']
     y = node['transform']['tx']
 
@@ -151,7 +151,7 @@ def parse_artwork(node, source):
             operation = node['shape']['operation']
             children = [parse_artwork(child, source)
                         for child in node['shape']['children']]
-            artwork = Compound(id, path, operation, children, name, x, y)
+            return Compound(uid, path, operation, children, name, x, y)
         else:
             raise UnknownShapeException("Error parsing unknown shape.")
     elif node['type'] == 'text':
