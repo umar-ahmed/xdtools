@@ -3,6 +3,7 @@ Contains the definition of Compound.
 """
 
 from xdtools.artwork.artwork import Artwork
+from xdtools.utils.point import Point
 
 
 class Compound(Artwork):

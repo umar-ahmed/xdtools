@@ -30,7 +30,7 @@ class UnknownShapeException(UnknownArtworkException):
 def parse_artwork(node):
     """Return the Artwork represented by node."""
     uid = node['id']
-    name = node['name']
+    name = node['name'] if 'name' in node else ''
     x = node['transform']['ty']
     y = node['transform']['tx']
 
