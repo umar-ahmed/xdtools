@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='xdtools',
-    packages=['xdtools', 'xdtools.utils', 'xdtools.artwork'],
+    packages=['xdtools', 'xdtools.utils', 'xdtools.artwork', 'xdtools.style'],
     version='0.0.2',
     description='An unofficial Python API for Adobe Experience Design',
     author='Umar Ahmed',
