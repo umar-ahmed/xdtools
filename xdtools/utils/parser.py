@@ -54,7 +54,7 @@ def parse_artwork(node):
             operation = node['shape']['operation']
             children = [parse_artwork(child)
                         for child in node['shape']['children']]
-            return Compound(id, path, operation, children, name, x, y)
+            return Compound(uid, path, operation, children, name, x, y)
         else:
             raise UnknownShapeException("Error parsing unknown shape.")
     elif node['type'] == 'text':
