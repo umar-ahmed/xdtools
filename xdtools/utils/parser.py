@@ -6,7 +6,8 @@ import json
 
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
-from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur, Font, Opacity
+from xdtools.style import ColorFill, GradientFill, PatternFill, ColorStroke, \
+                          DropShadow, Blur, Font, Opacity
 
 from xdtools.utils import Point, Color, Gradient, GradientStop
 from xdtools.utils.exceptions import *
@@ -79,7 +80,9 @@ def parse_styles(node, source):
             styles.append(opacity)
         elif key == 'fill':
             fill_type = value['type']
-            if fill_type == 'solid':
+            if fill_type == 'none':
+                pass
+            elif fill_type == 'solid':
                 color_node = value['color']['value']
                 color_fill = ColorFill(
                     color_node['r'], color_node['g'], color_node['b'])
@@ -99,20 +102,39 @@ def parse_styles(node, source):
                         gradient_fill = GradientFill(start, end, gradient)
                 if gradient_fill is not None:
                     styles.append(gradient_fill)
+            elif fill_type == 'pattern':
+                width = value['pattern']['width']
+                height = value['pattern']['height']
+                scale_behavior = value['pattern']['meta']['ux']['scaleBehavior']
+                image_href = value['pattern']['href']
+                pattern_fill = PatternFill(width, height, scale_behavior, image_href)
+                styles.append(pattern_fill)
             else:
-                raise UnknownFillTypeException('Unable to parse fill: ' + key)
+                raise UnknownFillTypeException(
+                    'Unable to parse fill: ' + fill_type)
         elif key == 'stroke':
-            width = value['width']
-            align = 'inside'
-            if 'align' in value:
-                align = value['align']
-            color_node = value['color']['value']
-            color_stroke = ColorStroke(width, align, color_node['r'],
-                                       color_node['g'], color_node['b'])
-            styles.append(color_stroke)
+            stroke_type = value['type']
+            if stroke_type == 'none':
+                pass
+            elif stroke_type == 'solid':
+                width = value['width']
+                align = 'inside'
+                if 'align' in value:
+                    align = value['align']
+                color_node = value['color']['value']
+                color_stroke = ColorStroke(width, align, color_node['r'],
+                                        color_node['g'], color_node['b'])
+                styles.append(color_stroke)
+            else:
+                raise UnknownStrokeTypeException(
+                    'Unable to parse stroke: ' + stroke_type)
         elif key == 'filters':
             for filter_ in value:
-                if filter_['type'] == 'dropShadow':
+                filter_type = filter_['type']
+                visible = filter_['visible'] if 'visible' in filter_ else True
+                if filter_type == 'none' or not visible:
+                    pass
+                elif filter_type == 'dropShadow':
                     for drop_shadow_json in filter_['params']['dropShadows']:
                         offset_x = drop_shadow_json['dx']
                         offset_y = drop_shadow_json['dy']
@@ -123,7 +145,7 @@ def parse_styles(node, source):
                         drop_shadow = DropShadow(
                             offset_x, offset_y, blur_radius, color)
                         styles.append(drop_shadow)
-                elif filter_['type'] == 'uxdesign#blur':
+                elif filter_type == 'uxdesign#blur':
                     blur_json = filter_['params']
                     amount = blur_json['blurAmount']
                     brightness = blur_json['brightnessAmount']
@@ -134,7 +156,7 @@ def parse_styles(node, source):
                     styles.append(blur)
                 else:
                     raise UnknownFilterTypeException(
-                        'Unable to parse filter: ' + key)
+                        'Unable to parse filter: ' + filter_type)
         elif key == 'font':
             family = value['family']
             style = value['style']
