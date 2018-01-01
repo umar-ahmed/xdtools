@@ -7,7 +7,7 @@ import json
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
 from xdtools.style import ColorFill, GradientFill, PatternFill, ColorStroke, \
-                          DropShadow, Blur, Font, Opacity, TextAttributes
+    DropShadow, Blur, Font, Opacity, TextAttributes
 
 from xdtools.utils import Point, Color, Gradient, GradientStop, ClipPath
 from xdtools.utils.exceptions import *
@@ -126,7 +126,8 @@ def parse_styles(node, source):
                 height = value['pattern']['height']
                 scale_behavior = value['pattern']['meta']['ux']['scaleBehavior']
                 image_href = value['pattern']['href']
-                pattern_fill = PatternFill(width, height, scale_behavior, image_href)
+                pattern_fill = PatternFill(
+                    width, height, scale_behavior, image_href)
                 styles.append(pattern_fill)
             else:
                 raise UnknownFillTypeException(
@@ -142,7 +143,7 @@ def parse_styles(node, source):
                     align = value['align']
                 color_node = value['color']['value']
                 color_stroke = ColorStroke(width, align, color_node['r'],
-                                        color_node['g'], color_node['b'])
+                                           color_node['g'], color_node['b'])
                 styles.append(color_stroke)
             else:
                 raise UnknownStrokeTypeException(
@@ -200,17 +201,18 @@ def parse_styles(node, source):
             if clip_path is not None:
                 styles.append(clip_path)
         else:
-            raise UnknownStyleException('Unable to parse the style: ' + style_type)
+            raise UnknownStyleException(
+                'Unable to parse the style: ' + style_type)
 
     return styles
 
 
 def parse_artwork(node, source):
     """Return the Artwork represented by node."""
-    uid = node['id']
-    name = node['name'] if 'name' in node else ''
-    x = node['transform']['ty']
-    y = node['transform']['tx']
+    uid = node['id'] if 'id' in node else None
+    name = node['name'] if 'name' in node else None
+    x = node['transform']['ty'] if 'transform' in node else None
+    y = node['transform']['tx'] if 'transform' in node else None
 
     artwork = None
 
