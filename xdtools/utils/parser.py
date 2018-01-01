@@ -120,7 +120,8 @@ def parse_styles(node, source):
                         color_node = drop_shadow_json['color']['value']
                         color = Color(
                             color_node['r'], color_node['g'], color_node['b'])
-                        drop_shadow = DropShadow(offset_x, offset_y, blur_radius, color)
+                        drop_shadow = DropShadow(
+                            offset_x, offset_y, blur_radius, color)
                         styles.append(drop_shadow)
                 elif filter_['type'] == 'uxdesign#blur':
                     blur_json = filter_['params']
@@ -128,7 +129,8 @@ def parse_styles(node, source):
                     brightness = blur_json['brightnessAmount']
                     fill_opacity = blur_json['fillOpacity']
                     background_effect = blur_json['backgroundEffect']
-                    blur = Blur(amount, brightness, fill_opacity, background_effect)
+                    blur = Blur(amount, brightness,
+                                fill_opacity, background_effect)
                     styles.append(blur)
                 else:
                     raise UnknownFilterTypeException(
@@ -156,7 +158,7 @@ def parse_artwork(node, source):
     artwork = None
 
     if node['type'] == 'shape':
-        if node['shape']['type'] == 'ellipse':
+        if node['shape']['type'] == 'ellipse' or node['shape']['type'] == 'circle':
             width, height = 2 * node['shape']['cx'], 2 * node['shape']['cy']
             artwork = Ellipse(uid, name, x, y, width, height)
         elif node['shape']['type'] == 'rect':
@@ -177,7 +179,8 @@ def parse_artwork(node, source):
                         for child in node['shape']['children']]
             return Compound(uid, path, operation, children, name, x, y)
         else:
-            raise UnknownShapeException("Error parsing unknown shape.")
+            raise UnknownShapeException(
+                "Error parsing unknown shape.", node['shape']['type'])
     elif node['type'] == 'text':
         raw_text = node['text']['rawText']
         artwork = Text(uid, raw_text, name, x, y)
@@ -186,7 +189,8 @@ def parse_artwork(node, source):
                     for child in node['group']['children']]
         artwork = Group(uid, name, x, y, children)
     else:
-        raise UnknownShapeException("Error parsing unknown artwork.")
+        raise UnknownArtworkException(
+            "Error parsing unknown artwork.", node['type'])
 
     try:
         if 'style' in node.keys():
@@ -231,22 +235,22 @@ def parse_artboard(node, source):
         node['path'])
     artboard_file = source.read(artboard_file_path)
     artboard_data = json.loads(artboard_file)
-    artworks = []
+    artwork = []
     for item in artboard_data['children']:
         for child in item['artboard']['children']:
             try:
-                artwork = parse_artwork(child, source)
+                art = parse_artwork(child, source)
             except UnknownShapeException as shape_exception:
                 print(shape_exception)
             except UnknownArtworkException as artwork_exception:
                 print(artwork_exception)
             else:
-                artworks.append(artwork)
+                artwork.append(art)
 
     if name == 'pasteboard':
-        return Artboard(uid, name, artworks=artworks)
+        return Artboard(uid, name, artwork=artwork)
     else:
-        return Artboard(uid, name, width, height, Point(x, y), viewport_height, artworks)
+        return Artboard(uid, name, width, height, Point(x, y), viewport_height, artwork)
 
 
 def parse_name(source):
