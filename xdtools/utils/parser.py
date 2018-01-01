@@ -7,7 +7,7 @@ import json
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
 from xdtools.style import ColorFill, GradientFill, PatternFill, ColorStroke, \
-                          DropShadow, Blur, Font, Opacity
+                          DropShadow, Blur, Font, Opacity, TextAttributes
 
 from xdtools.utils import Point, Color, Gradient, GradientStop
 from xdtools.utils.exceptions import *
@@ -164,6 +164,11 @@ def parse_styles(node, source):
             postscript_name = value['postscriptName']
             font = Font(family, style, size, postscript_name)
             styles.append(font)
+        elif key == 'textAttributes':
+            letter_spacing = value['letterSpacing'] if 'letterSpacing' in value else None
+            paragraph_align = value['paragraphAlign'] if 'paragraphAlign' in value else None
+            text_attributes = TextAttributes(letter_spacing, paragraph_align)
+            styles.append(text_attributes)
         else:
             raise UnknownStyleException('Unable to parse the style: ' + key)
 
