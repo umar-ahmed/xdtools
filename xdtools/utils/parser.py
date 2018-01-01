@@ -9,7 +9,7 @@ from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compoun
 from xdtools.style import ColorFill, GradientFill, PatternFill, ColorStroke, \
                           DropShadow, Blur, Font, Opacity, TextAttributes
 
-from xdtools.utils import Point, Color, Gradient, GradientStop
+from xdtools.utils import Point, Color, Gradient, GradientStop, ClipPath
 from xdtools.utils.exceptions import *
 
 
@@ -70,15 +70,33 @@ def parse_gradients(source):
     return gradients
 
 
+def parse_clip_paths(source):
+    """Return a list of ClipPaths in the provided source file."""
+    resources_file_path = "resources/graphics/graphicContent.agc"
+    resources_file = source.read(resources_file_path)
+    resources_json = json.loads(resources_file)
+    clip_paths_json = resources_json['resources']['clipPaths']
+
+    clip_paths = []
+    for uid, clip_path_node in clip_paths_json.items():
+        type_ = clip_path_node['type']
+        children = [parse_artwork(node, source)
+                    for node in clip_path_node['children']]
+        clip_path = ClipPath(uid, type_, children)
+        clip_paths.append(clip_path)
+
+    return clip_paths
+
+
 def parse_styles(node, source):
     """Return the Styles represented by node."""
     styles = []
-    for key, value in node.items():
-        if key == 'opacity':
+    for style_type, value in node.items():
+        if style_type == 'opacity':
             amount = value
             opacity = Opacity(amount)
             styles.append(opacity)
-        elif key == 'fill':
+        elif style_type == 'fill':
             fill_type = value['type']
             if fill_type == 'none':
                 pass
@@ -94,12 +112,13 @@ def parse_styles(node, source):
                 x2 = value['gradient']['x2']
                 y2 = value['gradient']['y2']
                 end = Point(x2, y2)
-                gradient_uid = value['gradient']['ref']
+                target_gradient_uid = value['gradient']['ref']
                 gradients = parse_gradients(source)
                 gradient_fill = None
                 for gradient in gradients:
-                    if gradient.uid == gradient_uid:
+                    if gradient.uid == target_gradient_uid:
                         gradient_fill = GradientFill(start, end, gradient)
+                        break
                 if gradient_fill is not None:
                     styles.append(gradient_fill)
             elif fill_type == 'pattern':
@@ -112,7 +131,7 @@ def parse_styles(node, source):
             else:
                 raise UnknownFillTypeException(
                     'Unable to parse fill: ' + fill_type)
-        elif key == 'stroke':
+        elif style_type == 'stroke':
             stroke_type = value['type']
             if stroke_type == 'none':
                 pass
@@ -128,7 +147,7 @@ def parse_styles(node, source):
             else:
                 raise UnknownStrokeTypeException(
                     'Unable to parse stroke: ' + stroke_type)
-        elif key == 'filters':
+        elif style_type == 'filters':
             for filter_ in value:
                 filter_type = filter_['type']
                 visible = filter_['visible'] if 'visible' in filter_ else True
@@ -157,20 +176,31 @@ def parse_styles(node, source):
                 else:
                     raise UnknownFilterTypeException(
                         'Unable to parse filter: ' + filter_type)
-        elif key == 'font':
+        elif style_type == 'font':
             family = value['family']
             style = value['style']
             size = value['size']
             postscript_name = value['postscriptName']
             font = Font(family, style, size, postscript_name)
             styles.append(font)
-        elif key == 'textAttributes':
+        elif style_type == 'textAttributes':
             letter_spacing = value['letterSpacing'] if 'letterSpacing' in value else None
             paragraph_align = value['paragraphAlign'] if 'paragraphAlign' in value else None
             text_attributes = TextAttributes(letter_spacing, paragraph_align)
             styles.append(text_attributes)
+        elif style_type == 'clipPath':
+            target_clip_path_uid = value['ref']
+            clip_paths = parse_clip_paths(source)
+            clip_path = None
+            for cp in clip_paths:
+                if cp.uid == target_clip_path_uid:
+                    clip_path = cp
+                    break
+
+            if clip_path is not None:
+                styles.append(clip_path)
         else:
-            raise UnknownStyleException('Unable to parse the style: ' + key)
+            raise UnknownStyleException('Unable to parse the style: ' + style_type)
 
     return styles
 
