@@ -18,7 +18,7 @@ def get_resources_file_json(source):
     if source is not None:
         resources_file = source.read(
             "resources/graphics/graphicContent.agc")
-        return json.loads(resources_file)
+        return json.loads(resources_file.decode('utf-8'))
     else:
         raise Exception()
 
@@ -27,7 +27,7 @@ def get_manifest_file_json(source):
     """Return the manifest JSON file of the provided source file"""
     if source is not None:
         manifest_file = source.read("manifest")
-        return json.loads(manifest_file)
+        return json.loads(manifest_file.decode('utf-8'))
     else:
         raise Exception()
 
@@ -48,7 +48,7 @@ def parse_gradients(source):
     """Return a list of Gradients in the provided source file."""
     resources_file_path = "resources/graphics/graphicContent.agc"
     resources_file = source.read(resources_file_path)
-    resources_json = json.loads(resources_file)
+    resources_json = json.loads(resources_file.decode('utf-8'))
     gradients_json = resources_json['resources']['gradients']
 
     gradients = []
@@ -74,7 +74,7 @@ def parse_clip_paths(source):
     """Return a list of ClipPaths in the provided source file."""
     resources_file_path = "resources/graphics/graphicContent.agc"
     resources_file = source.read(resources_file_path)
-    resources_json = json.loads(resources_file)
+    resources_json = json.loads(resources_file.decode('utf-8'))
     clip_paths_json = resources_json['resources']['clipPaths']
 
     clip_paths = []
@@ -293,7 +293,7 @@ def parse_artboard(node, source):
     artboard_file_path = "artwork/{}/graphics/graphicContent.agc".format(
         node['path'])
     artboard_file = source.read(artboard_file_path)
-    artboard_data = json.loads(artboard_file)
+    artboard_data = json.loads(artboard_file.decode('utf-8'))
     artwork = []
     for item in artboard_data['children']:
         artboard_nodes = ([item]
