@@ -20,5 +20,5 @@ class Font(Style):
     def __repr__(self):
         """Return a constructor-style representation of this Font."""
         return str.format(
-            'Font(family=\'{}\', style=\'{}\', size={}, postscript_name=\'{}\')',
+            'Font(family={}, style={}, size={}, postscript_name={})',
             repr(self.family), repr(self.style), repr(self.size), repr(self.postscript_name))

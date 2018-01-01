@@ -21,16 +21,16 @@ class Group(Artwork):
 
     def __init__(self, uid, name='Group', x=0, y=0, children=None):
         """Instantiate a new Group."""
-        super().__init__(uid, name)
+        super().__init__(uid, 'group', name)
         self.position = Point(x, y)
         self.children = [] if children is None else children
 
     def __repr__(self):
         """Return a constructor-style representation of this Group."""
-        children_str = ','.join([str(child) for child in self.children])
         return str.format(
-            "Group(uid=\'{}\', name=\'{}\', position={}, children=[{}], styles={})",
-            self.uid, self.name, self.position, children_str, self.styles)
+            "Group(uid={}, type={}, name={}, position={}, children={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.position),
+            repr(self.children), repr(self.styles))
 
     def add_child(self, child) -> None:
         """Add child to this Group's children."""

@@ -24,7 +24,7 @@ class Line(Artwork):
         """
         Instantiate a new Line.
         """
-        super().__init__(uid, name)
+        super().__init__(uid, 'line', name)
         self.position = Point(x, y)
         self.start = Point(start_x, start_y)
         self.end = Point(end_x, end_y)
@@ -34,5 +34,6 @@ class Line(Artwork):
         Return a constructor-style representation of this Line.
         """
         return str.format(
-            "Line(uid=\'{}\', name=\'{}\', position={}, start={}, end={}, styles={})",
-            self.uid, self.name, self.position, self.start, self.end, self.styles)
+            "Line(uid={}, type={}, name={}, position={}, start={}, end={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.position),
+            repr(self.start), repr(self.end), repr(self.styles))

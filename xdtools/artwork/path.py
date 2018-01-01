@@ -20,12 +20,14 @@ class Path(Artwork):
 
     def __init__(self, uid, path_data, name='Path', x=0, y=0):
         """Instantiate a new Path."""
-        super().__init__(uid, name)
+        super().__init__(uid, 'path', name)
         self.path_data = path_data
         self.position = Point(x, y)
 
     def __repr__(self):
         """Return a constructor-style representation of this Path."""
         return str.format(
-            "Path(uid=\'{}\', name=\'{}\', path_data=\'{}\', position={}, styles={})",
-            self.uid, self.name, self.path_data, self.position, self.styles)
+            "Path(uid={}, type={}, name={}, path_data={}, position={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.path_data),
+            repr(self.position), repr(self.styles))
+

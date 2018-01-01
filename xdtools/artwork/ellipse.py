@@ -22,7 +22,7 @@ class Ellipse(Artwork):
 
     def __init__(self, uid, name='Ellipse', x=0, y=0, width=50, height=50):
         """Instantiate a new Ellipse."""
-        super().__init__(uid, name)
+        super().__init__(uid, 'ellipse', name)
         self.position = Point(x, y)
         self.width = width
         self.height = height
@@ -30,5 +30,6 @@ class Ellipse(Artwork):
     def __repr__(self):
         """Return a constructor-style representation of this Ellipse."""
         return str.format(
-            "Ellipse(uid=\'{}\', name=\'{}\', position={}, width={}, height={}, styles={})",
-            self.uid, self.name, self.position, self.width, self.height, self.styles)
+            "Ellipse(uid={}, type={}, name={}, position={}, width={}, height={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.position),
+            repr(self.width), repr(self.height), repr(self.styles))

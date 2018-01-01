@@ -21,4 +21,4 @@ class Opacity(Style):
 
     def __repr__(self):
         """Return a constructor-style representation of this Opacity."""
-        return str.format('Opacity(amount={})', self.amount)
+        return str.format('Opacity(amount={})', repr(self.amount))

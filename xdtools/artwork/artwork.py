@@ -7,9 +7,10 @@ from xdtools.utils.exceptions import DuplicateStyleTypeException
 class Artwork:
     """Represents an Artwork on an Artboard."""
 
-    def __init__(self, uid, name):
+    def __init__(self, uid, type_, name):
         """Instantiates this Artwork."""
         self.uid = uid
+        self.type = type_
         self.name = name
         self.styles = {}
 
