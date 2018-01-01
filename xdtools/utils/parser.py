@@ -237,7 +237,10 @@ def parse_artboard(node, source):
     artboard_data = json.loads(artboard_file)
     artwork = []
     for item in artboard_data['children']:
-        for child in item['artboard']['children']:
+        artboard_nodes = ([item]
+                          if 'artboard' not in item
+                          else item['artboard']['children'])
+        for child in artboard_nodes:
             try:
                 art = parse_artwork(child, source)
             except UnknownShapeException as shape_exception:
