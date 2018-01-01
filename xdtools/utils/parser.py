@@ -6,7 +6,7 @@ import json
 
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
-from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur, Font
+from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur, Font, Opacity
 
 from xdtools.utils import Point, Color, Gradient, GradientStop
 from xdtools.utils.exceptions import *
@@ -73,7 +73,11 @@ def parse_styles(node, source):
     """Return the Styles represented by node."""
     styles = []
     for key, value in node.items():
-        if key == 'fill':
+        if key == 'opacity':
+            amount = value
+            opacity = Opacity(amount)
+            styles.append(opacity)
+        elif key == 'fill':
             fill_type = value['type']
             if fill_type == 'solid':
                 color_node = value['color']['value']
