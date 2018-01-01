@@ -2,8 +2,8 @@
 Contains the definition of Text.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Text(Artwork):
@@ -20,13 +20,13 @@ class Text(Artwork):
 
     def __init__(self, uid, raw_text, name='Text', x=0, y=0):
         """Instantiate a new Text object."""
-        self.uid = uid
+        super().__init__(uid, 'text', name)
         self.raw_text = raw_text
-        self.name = name
         self.position = Point(x, y)
 
     def __repr__(self):
         """Return a constructor-style representation of this Text."""
         return str.format(
-            "Text(uid=\'{}\', name=\'{}\', raw_text=\'{}\', position={})",
-            self.uid, self.name, self.raw_text, self.position)
+            "Text(uid={}, type={}, name={}, raw_text={}, position={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.raw_text),
+            repr(self.position), repr(self.styles))

@@ -2,8 +2,8 @@
 Contains the definition of Path.
 """
 
-from xdtools.utils.point import Point
-from xdtools.artwork.artwork import Artwork
+from xdtools.utils import Point
+from xdtools.artwork import Artwork
 
 
 class Path(Artwork):
@@ -20,13 +20,14 @@ class Path(Artwork):
 
     def __init__(self, uid, path_data, name='Path', x=0, y=0):
         """Instantiate a new Path."""
-        self.uid = uid
+        super().__init__(uid, 'path', name)
         self.path_data = path_data
-        self.name = name
         self.position = Point(x, y)
 
     def __repr__(self):
         """Return a constructor-style representation of this Path."""
         return str.format(
-            "Path(uid=\'{}\', name=\'{}\', path_data=\'{}\', position={})",
-            self.uid, self.name, self.path_data, self.position)
+            "Path(uid={}, type={}, name={}, path_data={}, position={}, styles={})",
+            repr(self.uid), repr(self.type), repr(self.name), repr(self.path_data),
+            repr(self.position), repr(self.styles))
+
