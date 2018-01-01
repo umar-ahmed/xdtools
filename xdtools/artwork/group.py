@@ -29,8 +29,8 @@ class Group(Artwork):
         """Return a constructor-style representation of this Group."""
         children_str = ','.join([str(child) for child in self.children])
         return str.format(
-            "Group(uid=\'{}\', name=\'{}\', position={}, children=[{}])",
-            self.uid, self.name, self.position, children_str)
+            "Group(uid=\'{}\', name=\'{}\', position={}, children=[{}], styles={})",
+            self.uid, self.name, self.position, children_str, self.styles)
 
     def add_child(self, child) -> None:
         """Add child to this Group's children."""

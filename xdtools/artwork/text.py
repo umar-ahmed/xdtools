@@ -27,5 +27,5 @@ class Text(Artwork):
     def __repr__(self):
         """Return a constructor-style representation of this Text."""
         return str.format(
-            "Text(uid=\'{}\', name=\'{}\', raw_text=\'{}\', position={})",
-            self.uid, self.name, self.raw_text, self.position)
+            "Text(uid=\'{}\', name=\'{}\', raw_text=\'{}\', position={}, styles={})",
+            self.uid, self.name, self.raw_text, self.position, self.styles)

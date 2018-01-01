@@ -30,5 +30,5 @@ class Ellipse(Artwork):
     def __repr__(self):
         """Return a constructor-style representation of this Ellipse."""
         return str.format(
-            "Ellipse(uid=\'{}\', name=\'{}\', position={}, width={}, height={})",
-            self.uid, self.name, self.position, self.width, self.height)
+            "Ellipse(uid=\'{}\', name=\'{}\', position={}, width={}, height={}, styles={})",
+            self.uid, self.name, self.position, self.width, self.height, self.styles)

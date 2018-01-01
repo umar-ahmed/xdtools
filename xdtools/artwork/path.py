@@ -27,5 +27,5 @@ class Path(Artwork):
     def __repr__(self):
         """Return a constructor-style representation of this Path."""
         return str.format(
-            "Path(uid=\'{}\', name=\'{}\', path_data=\'{}\', position={})",
-            self.uid, self.name, self.path_data, self.position)
+            "Path(uid=\'{}\', name=\'{}\', path_data=\'{}\', position={}, styles={})",
+            self.uid, self.name, self.path_data, self.position, self.styles)

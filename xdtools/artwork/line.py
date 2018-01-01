@@ -34,5 +34,5 @@ class Line(Artwork):
         Return a constructor-style representation of this Line.
         """
         return str.format(
-            "Line(uid=\'{}\', name=\'{}\', position={}, start={}, end={})",
-            self.uid, self.name, self.position, self.start, self.end)
+            "Line(uid=\'{}\', name=\'{}\', position={}, start={}, end={}, styles={})",
+            self.uid, self.name, self.position, self.start, self.end, self.styles)

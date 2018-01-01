@@ -35,6 +35,6 @@ class Compound(Artwork):
         children_str = [repr(child) for child in self.children]
         return str.format(
             "Compound(uid=\'{}\', path=\'{}\', operation=\'{}\', " +
-            "children=[{}], name=\'{}\', position={})",
+            "children=[{}], name=\'{}\', position={}, styles={})",
             self.uid, self.path, self.operation, children_str, self.name,
-            self.position)
+            self.position, self.styles)
