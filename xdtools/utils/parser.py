@@ -6,7 +6,7 @@ import json
 
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
-from xdtools.style import ColorFill, GradientFill, ColorStroke
+from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur
 
 from xdtools.utils import Point, Color, Gradient, GradientStop
 from xdtools.utils.exceptions import *
@@ -106,14 +106,29 @@ def parse_styles(node, source):
             color_stroke = ColorStroke(width, align, color_node['r'],
                                        color_node['g'], color_node['b'])
             styles.append(color_stroke)
-        # elif key == 'filter':
-        #     for filter_ in value:
-        #         if filter_['type'] == 'dropShadow':
-        #             raise NotImplementedError("dropShadow not supported yet")
-        #         elif filter_['type'] == 'uxdesign#blur':
-        #             raise NotImplementedError("blur not supported yet")
-        #         else:
-        #             raise UnknownFilterTypeException('Unable to parse filter: ' + key)
+        elif key == 'filters':
+            for filter_ in value:
+                if filter_['type'] == 'dropShadow':
+                    for drop_shadow_json in filter_['params']['dropShadows']:
+                        offset_x = drop_shadow_json['dx']
+                        offset_y = drop_shadow_json['dy']
+                        blur_radius = drop_shadow_json['r']
+                        color_node = drop_shadow_json['color']['value']
+                        color = Color(
+                            color_node['r'], color_node['g'], color_node['b'])
+                        drop_shadow = DropShadow(offset_x, offset_y, blur_radius, color)
+                        styles.append(drop_shadow)
+                elif filter_['type'] == 'uxdesign#blur':
+                    blur_json = filter_['params']
+                    amount = blur_json['blurAmount']
+                    brightness = blur_json['brightnessAmount']
+                    fill_opacity = blur_json['fillOpacity']
+                    background_effect = blur_json['backgroundEffect']
+                    blur = Blur(amount, brightness, fill_opacity, background_effect)
+                    styles.append(blur)
+                else:
+                    raise UnknownFilterTypeException(
+                        'Unable to parse filter: ' + key)
         # elif key == 'font':
         #     raise NotImplementedError('font not supported yet')
         else:
@@ -168,8 +183,8 @@ def parse_artwork(node, source):
         if 'style' in node.keys():
             styles = parse_styles(node['style'], source)
             artwork.add_styles(styles)
-    except XDToolsException:
-        print('Error processing styles')
+    except XDToolsException as e:
+        print('Error processing styles.', e)
 
     return artwork
 
@@ -223,6 +238,7 @@ def parse_artboard(node, source):
         return Artboard(uid, name, artworks=artworks)
     else:
         return Artboard(uid, name, width, height, Point(x, y), viewport_height, artworks)
+
 
 def parse_name(source):
     """Return the name of the XD project for the provided source file."""

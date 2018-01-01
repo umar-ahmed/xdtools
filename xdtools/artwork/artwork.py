@@ -2,14 +2,7 @@
 Contains the definition of class Artwork.
 """
 
-
-class DuplicateStyleTypeException(Exception):
-    """
-    Represents an Exception resulting from duplicate style types in the same
-    artwork.
-    """
-    pass
-
+from xdtools.utils.exceptions import DuplicateStyleTypeException
 
 class Artwork:
     """Represents an Artwork on an Artboard."""
@@ -26,11 +19,16 @@ class Artwork:
 
         Raises DuplicateStyleTypeException.
         """
-        if style.type not in self.styles:
-            self.styles[style.type] = style
+        if style.type == 'filter':
+            if style.type not in self.styles:
+                self.styles[style.type] = []
+            self.styles[style.type] += [style]
         else:
-            raise DuplicateStyleTypeException(
-                str.format('There already exists a style of type ' + style.type))
+            if style.type not in self.styles:
+                self.styles[style.type] = style
+            else:
+                raise DuplicateStyleTypeException(
+                    'There already exists a style of type ' + style.type)
 
     def add_styles(self, styles):
         """Add all Styles in styles to this Artwork."""

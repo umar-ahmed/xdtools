@@ -21,6 +21,13 @@ class UnknownStyleException(XDToolsException):
     pass
 
 
+class DuplicateStyleTypeException(XDToolsException):
+    """
+    Represents an Exception resulting from duplicate style types in the same
+    artwork.
+    """
+    pass
+
 class UnknownFillTypeException(UnknownStyleException):
     """Represents an exception where the type of fill is unknown"""
     pass

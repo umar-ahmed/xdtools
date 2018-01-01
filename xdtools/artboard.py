@@ -21,7 +21,8 @@ class Artboard:
     === Operations ===
     """
 
-    def __init__(self, uid, name, width=None, height=None, position=None, viewport_height=None, artworks=None):
+    def __init__(self, uid, name, width=None, height=None, position=None,
+                 viewport_height=None, artworks=None):
         """Instantiate this Artboard."""
         self.uid = uid
         self.name = name
