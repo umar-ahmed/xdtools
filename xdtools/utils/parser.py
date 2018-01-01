@@ -6,7 +6,7 @@ import json
 
 from xdtools.artboard import Artboard
 from xdtools.artwork import Ellipse, Rectangle, Line, Text, Path, Group, Compound
-from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur
+from xdtools.style import ColorFill, GradientFill, ColorStroke, DropShadow, Blur, Font
 
 from xdtools.utils import Point, Color, Gradient, GradientStop
 from xdtools.utils.exceptions import *
@@ -129,8 +129,13 @@ def parse_styles(node, source):
                 else:
                     raise UnknownFilterTypeException(
                         'Unable to parse filter: ' + key)
-        # elif key == 'font':
-        #     raise NotImplementedError('font not supported yet')
+        elif key == 'font':
+            family = value['family']
+            style = value['style']
+            size = value['size']
+            postscript_name = value['postscriptName']
+            font = Font(family, style, size, postscript_name)
+            styles.append(font)
         else:
             raise UnknownStyleException('Unable to parse the style: ' + key)
 
