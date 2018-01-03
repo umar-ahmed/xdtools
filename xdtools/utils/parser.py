@@ -211,8 +211,8 @@ def parse_artwork(node, source):
     """Return the Artwork represented by node."""
     uid = node['id'] if 'id' in node else None
     name = node['name'] if 'name' in node else None
-    x = node['transform']['ty'] if 'transform' in node else None
-    y = node['transform']['tx'] if 'transform' in node else None
+    x = node['transform']['tx'] if 'transform' in node else None
+    y = node['transform']['ty'] if 'transform' in node else None
 
     artwork = None
 
